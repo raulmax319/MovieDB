@@ -1,0 +1,23 @@
+name: MovieDB
+
+options:
+  minimumXcodeGenVersion: 2.29
+  xcodeVersion: 14.3
+  groupSortPosition: top
+  generateEmptyDirectories: true
+  deploymentTarget:
+    iOS: 14.0
+  preGenCommand: sh scripts/pre_gen.sh
+  postGenCommand: sh scripts/post_gen.sh
+configFiles:
+  Debug: config/xcconfig/development.xcconfig
+  Release: config/xcconfig/release.xcconfig
+
+fileGroups:
+  - config
+
+include:
+  - path: xcodegen/ios.yml
+    relativePaths: false
+  - path: xcodegen/schemes.yml
+    relativePaths: false

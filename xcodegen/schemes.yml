@@ -1,0 +1,19 @@
+schemes:
+  MovieDB:
+    shared: YES
+    buildAction: build
+    runAction: run
+    testAction: test
+    archiveAction: archive
+    profileAction: profile
+    analyzeAction: analyze
+    build:
+      targets:
+        MovieDB: all
+        MovieDBTests: [run, test]
+    test:
+      gatherCoverageData: YES
+      coverageTargets:
+        - MovieDB
+      targets:
+        - MovieDBTests

@@ -1,0 +1,43 @@
+targets:
+  MovieDB:
+    type: application
+    platform: iOS
+
+    sources:
+      - path: Sources/MovieDB
+        name: MovieDB
+
+    configFiles:
+      debug: [config/xcconfig/development.xcconfig, $(inherited)]
+      release: [config/xcconfig/release.xcconfig, $(inherited)]
+
+    settings:
+      INFOPLIST_FILE: Sources/MovieDB/Supporting Files/Info.plist
+      PRODUCT_BUNDLE_IDENTIFIER: $(PRODUCT_BUNDLE_IDENTIFIER)
+
+    preBuildScripts:
+      - name: Integrate Swiftlint
+        script: sh scripts/swiftlint.sh
+        showEnvVars: YES
+        basedOnDependencyAnalysis: NO
+
+  MovieDBTests:
+    type: bundle.unit-test
+    platform: iOS
+
+    sources:
+      - path: Sources/Tests
+        name: Tests for MovieDB
+
+    configFiles:
+      debug: [config/xcconfig/moviedbtests.xcconfig, $(inherited)]
+
+    settings:
+      INFOPLIST_FILE: Sources/Tests/Supporting Files/Info.plist
+      PRODUCT_BUNDLE_IDENTIFIER: $(PRODUCT_BUNDLE_IDENTIFIER)
+
+    preBuildScripts:
+      - name: Integrate Swiftlint
+        script: sh scripts/swiftlint.sh
+        showEnvVars: YES
+        basedOnDependencyAnalysis: NO
