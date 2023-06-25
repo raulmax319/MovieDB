@@ -29,6 +29,9 @@ targets:
       - path: Sources/Tests
         name: Tests for MovieDB
 
+    dependencies:
+      - target: MovieDB
+
     configFiles:
       debug: [config/xcconfig/moviedbtests.xcconfig, $(inherited)]
 
