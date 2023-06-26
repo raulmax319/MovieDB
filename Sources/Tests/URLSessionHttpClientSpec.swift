@@ -10,6 +10,7 @@ import XCTest
 @testable import MovieDB
 
 final class URLSessionHttpClientSpec: XCTestCase {
+  var url: URL!
   var sut: URLSessionHttpClient!
   var urlSession: URLSession!
 
@@ -19,12 +20,14 @@ final class URLSessionHttpClientSpec: XCTestCase {
     let configuration = URLSessionConfiguration.default
     configuration.protocolClasses = [URLProtocolMock.self]
     let urlSession = URLSession(configuration: configuration)
-    let request = URLRequest(url: URL(string: "http://localmock:3333")!)
-    sut = URLSessionHttpClient(session: urlSession, request: request)
+    url = URL(string: "http://localmock:3333")
+    sut = URLSessionHttpClient(with: url, session: urlSession)
   }
 
   override func tearDown() {
     sut = nil
+    url = nil
+    URLProtocolMock.requestHandler = nil
 
     super.tearDown()
   }
@@ -48,7 +51,7 @@ final class URLSessionHttpClientSpec: XCTestCase {
       return (response, movieJson)
     }
 
-    sut.request { (result: Result<Movie, Error>) in
+    sut.request { (result: Result<MovieModel, Error>) in
       guard case let .success(success) = result else {
         XCTFail("Should have been a success")
         return
@@ -81,6 +84,34 @@ final class URLSessionHttpClientSpec: XCTestCase {
       }
 
       XCTAssertTrue(error is DecodingError)
+      expectation.fulfill()
+    }
+
+    wait(for: [expectation], timeout: 1.0)
+  }
+
+  func testRawDataFailure() {
+    let err = URLError(.cannotDecodeRawData)
+    let expectation = expectation(description: "Did call http request")
+    URLProtocolMock.requestHandler = { _ in
+      throw err
+    }
+
+    sut.request { (result: Result<Movie, Error>) in
+      guard case let .failure(error) = result else {
+        XCTFail("Should have been a failure")
+        return
+      }
+
+      XCTAssertTrue(
+        error is URLError,
+        "\(type(of: error)) is not equal to URLError"
+      )
+
+      XCTAssertTrue(
+        error.localizedDescription == err.localizedDescription
+      )
+
       expectation.fulfill()
     }
 
