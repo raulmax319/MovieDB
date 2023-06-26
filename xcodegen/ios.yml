@@ -36,7 +36,7 @@ targets:
       debug: [config/xcconfig/moviedbtests.xcconfig, $(inherited)]
 
     settings:
-      INFOPLIST_FILE: Sources/Tests/Supporting Files/Info.plist
+      GENERATE_INFOPLIST_FILE: YES
       PRODUCT_BUNDLE_IDENTIFIER: $(PRODUCT_BUNDLE_IDENTIFIER)
 
     preBuildScripts:
