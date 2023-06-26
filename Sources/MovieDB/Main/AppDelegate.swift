@@ -15,12 +15,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
-
     let window = UIWindow(frame: UIScreen.main.bounds)
-    window.rootViewController = UINavigationController(
-      rootViewController: ViewController())
-    window.makeKeyAndVisible()
+    let router = MovieRouter.start()
+    let initialViewController = router.entryPoint
 
+    window.rootViewController = initialViewController
+    window.makeKeyAndVisible()
     self.window = window
 
     return true
