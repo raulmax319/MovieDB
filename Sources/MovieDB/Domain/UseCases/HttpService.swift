@@ -8,6 +8,6 @@
 import Foundation
 
 protocol HttpService {
-  var httpClient: HttpRequest { get }
-  func getMovies(completion: @escaping (Result<Movie, Error>) -> Void)
+  var httpClient: HttpRequest? { get }
+  func getMovies(completion: @escaping (Result<MovieModel, Error>) -> Void)
 }
